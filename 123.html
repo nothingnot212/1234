@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Mini Google Doc</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f7f7fa;
+            margin: 0; padding: 0;
+        }
+        .toolbar {
+            background: #fff;
+            border-bottom: 1px solid #ddd;
+            padding: 8px;
+            display: flex;
+            gap: 8px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        .editor-container {
+            max-width: 800px;
+            margin: 40px auto 0 auto;
+            background: #fff;
+            border-radius: 6px;
+            box-shadow: 0 1px 6px rgba(0,0,0,0.07);
+            padding: 32px 24px;
+            min-height: 400px;
+        }
+        #editor {
+            min-height: 300px;
+            outline: none;
+        }
+        .button {
+            border: 1px solid #ccc;
+            background: #f9f9f9;
+            border-radius: 3px;
+            padding: 4px 8px;
+            cursor: pointer;
+            font-size: 15px;
+        }
+        .button.active {
+            background: #e0e0fc;
+        }
+    </style>
+</head>
+<body>
+    <div class="toolbar">
+        <button class="button" onclick="execCmd('bold')"><b>B</b></button>
+        <button class="button" onclick="execCmd('italic')"><i>I</i></button>
+        <button class="button" onclick="execCmd('underline')"><u>U</u></button>
+        <button class="button" onclick="execCmd('insertUnorderedList')">&bull; List</button>
+        <button class="button" onclick="execCmd('formatBlock', '<h1>')">H1</button>
+        <button class="button" onclick="execCmd('formatBlock', '<h2>')">H2</button>
+        <button class="button" onclick="execCmd('removeFormat')">Clear</button>
+        <button class="button" onclick="saveDoc()">💾 Save</button>
+    </div>
+    <div class="editor-container">
+        <div id="editor" contenteditable="true" spellcheck="true"></div>
+    </div>
+
+    <script>
+        // Load document from localStorage
+        window.onload = function() {
+            const saved = localStorage.getItem('myMiniDoc');
+            if (saved) document.getElementById('editor').innerHTML = saved;
+        };
+
+        // Basic rich text commands
+        function execCmd(cmd, value = null) {
+            document.execCommand(cmd, false, value);
+            document.getElementById('editor').focus();
+        }
+
+        // Save the document to localStorage
+        function saveDoc() {
+            const content = document.getElementById('editor').innerHTML;
+            localStorage.setItem('myMiniDoc', content);
+            alert('Document saved!');
+        }
+    </script>
+</body>
+</html>
